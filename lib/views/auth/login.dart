@@ -20,7 +20,7 @@ class LoginPage extends StatelessWidget {
           const Gap(20),
           ElevatedButton(
               onPressed: () {
-                Get.toNamed(SystemPage.getHomePage);
+                Get.toNamed(SystemPage.getMainpage);
               },
               child: const Text('login'))
         ],

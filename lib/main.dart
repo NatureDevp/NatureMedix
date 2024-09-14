@@ -4,7 +4,7 @@ import 'package:naturemedix_admin/helpers/_init.dart';
 import 'package:naturemedix_admin/views/landing.dart';
 
 import 'routes/_pages.dart';
-import 'views/home.dart';
+import 'views/main.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
