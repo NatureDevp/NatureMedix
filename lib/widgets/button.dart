@@ -3,23 +3,31 @@ import 'package:flutter/widgets.dart';
 import 'package:gap/gap.dart';
 import 'package:naturemedix_admin/utils/_system.dart';
 
-class SidebarButton {
-  static Widget buttonStyle1({
-    bool isSelected = false,
-    Function()? onPressed,
-    bool isNewNotify = false,
-    String label = 'Button',
-    IconData icon = Icons.abc,
-  }) {
+class CustomButton extends StatelessWidget {
+  CustomButton({
+    super.key,
+    required this.onPressed,
+    required this.isSelected,
+    this.label = 'Button',
+    this.icon = Icons.abc,
+    this.isNewNotify = false,
+  });
+  bool isSelected;
+  Function()? onPressed;
+  bool isNewNotify;
+  String label;
+  IconData icon;
+  @override
+  Widget build(BuildContext context) {
     return MaterialButton(
-      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
+      padding: const EdgeInsets.symmetric(vertical: 15, horizontal: 16),
       onPressed: onPressed,
       color: isSelected ? SystemColor.primary.withOpacity(0.1) : null,
       child: Row(
         children: [
           Icon(
             icon,
-            size: 25,
+            size: 20,
             color: isSelected ? SystemColor.primary : SystemColor.neutralWHite,
           ),
           const Gap(8),
@@ -28,8 +36,8 @@ class SidebarButton {
             style: TextStyle(
               color:
                   isSelected ? SystemColor.primary : SystemColor.neutralWHite,
-              fontSize: 16,
-              fontWeight: FontWeight.w500,
+              fontSize: 14,
+              fontWeight: FontWeight.w300,
             ),
           ),
           const Spacer(),

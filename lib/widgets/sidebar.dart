@@ -15,7 +15,7 @@ class Sidebar extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 30),
       height: double.infinity,
       width: double.infinity,
-      color: SystemColor.secondary,
+      color: SystemColor.dimBlue,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.stretch,
