@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:naturemedix_admin/controllers/request.dart';
+import 'package:naturemedix_admin/routes/_pages.dart';
 import 'package:naturemedix_admin/utils/_system.dart';
 
 import 'package:naturemedix_admin/widgets/header.dart';
+import 'package:naturemedix_admin/widgets/navigation.dart';
 
 class RequestListPage extends StatelessWidget {
   const RequestListPage({super.key});
@@ -23,7 +25,15 @@ class RequestListPage extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const TopNavigation(),
+                TopNavigation(
+                  label: 'Request List',
+                  back: () {
+                    Get.back();
+                  },
+                  goTo: () {
+                    Get.toNamed(SystemPage.getWorkplacepage);
+                  },
+                ),
                 const Gap(5),
                 Divider(
                   color: SystemColor.mediumGrey,
@@ -168,43 +178,6 @@ class CustomFilter extends StatelessWidget {
         //     ),
         //   ),
         // ),
-      ],
-    );
-  }
-}
-
-class TopNavigation extends StatelessWidget {
-  const TopNavigation({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        TextButton.icon(
-          style: ButtonStyle(
-            foregroundColor: WidgetStatePropertyAll(SystemColor.mediumGrey),
-          ),
-          onPressed: () {
-            Get.back();
-          },
-          label: const Text('Back'),
-          icon: const Icon(Icons.arrow_back_ios_sharp),
-        ),
-        TextButton.icon(
-          style: ButtonStyle(
-            foregroundColor: WidgetStatePropertyAll(SystemColor.primary),
-          ),
-          onPressed: () {},
-          label: Text(
-            'My Workplace',
-            style: TextStyle(
-              decoration: TextDecoration.underline,
-              decorationColor: SystemColor.primary,
-            ),
-          ),
-        ),
       ],
     );
   }

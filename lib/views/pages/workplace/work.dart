@@ -1,6 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:naturemedix_admin/controllers/workplace.dart';
+import 'package:naturemedix_admin/routes/_pages.dart';
+import 'package:naturemedix_admin/utils/_system.dart';
+import 'package:naturemedix_admin/views/pages/request/req_list.dart';
+import 'package:naturemedix_admin/widgets/card4.dart';
+import 'package:naturemedix_admin/widgets/createcard.dart';
+import 'package:naturemedix_admin/widgets/header.dart';
+import 'package:naturemedix_admin/widgets/navigation.dart';
 
 class WorkplacePage extends StatelessWidget {
   const WorkplacePage({super.key});
@@ -8,39 +16,94 @@ class WorkplacePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final WorkplaceController controller = Get.find<WorkplaceController>();
-  return DefaultTabController(
-    initialIndex: 0,
-  length: 3,
-  child: Scaffold(
-    body: Column(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      mainAxisSize: MainAxisSize.min,
       children: [
-         TabBar( 
-          tabs: [
-              Tab(text: 'All'),
-              Tab(text: 'In progress'),
-              Tab(text: 'Completed'),
-          ],
-          controller: controller.tabController,
-          indicatorColor: Colors.green,
+        const Header(title: 'Workplace'),
+        const Gap(20),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 18),
+          child: TopNavigation(
+            label: 'Workplace',
+            back: () {
+              Get.back();
+            },
+            goTo: () {
+              Get.toNamed(SystemPage.getRequestListpage);
+            },
+          ),
         ),
+        const Gap(5),
+        Divider(
+          color: SystemColor.mediumGrey,
+          thickness: 0.1,
+        ),
+        const Gap(5),
         Expanded(
-          child: TabBarView(
-        controller: controller.tabController,
-        children: [
-          buildPlantGrid(controller, 'All'),
-          buildPlantGrid(controller, 'In progress'),
-          buildPlantGrid(controller, 'Completed'),
-        ],
-      ),
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 18),
+            child: DefaultTabController(
+              initialIndex: 0,
+              length: 3,
+              child: Scaffold(
+                body: Column(
+                  children: [
+                    TabBar(
+                      tabs: const [
+                        Tab(text: 'All'),
+                        Tab(text: 'In progress'),
+                        Tab(text: 'Completed'),
+                      ],
+                      controller: controller.tabController,
+                      indicatorColor: SystemColor.primary,
+                      tabAlignment: TabAlignment.start,
+                      isScrollable: true,
+                      labelColor: SystemColor.primary,
+                      labelStyle: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                      unselectedLabelColor: SystemColor.mediumGrey,
+                      unselectedLabelStyle: const TextStyle(
+                        fontWeight: FontWeight.normal,
+                      ),
+                    ),
+                    Expanded(
+                      child: TabBarView(
+                        controller: controller.tabController,
+                        children: [
+                          TabBody(
+                            controller: controller,
+                            statusFilter: 'All',
+                          ),
+                          TabBody(
+                            controller: controller,
+                            statusFilter: 'Ongoing',
+                          ),
+                          TabBody(
+                            controller: controller,
+                            statusFilter: 'Completed',
+                          ),
+                        ],
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
         ),
       ],
-    ),
-  ),
-);
-
+    );
   }
+}
 
-  Widget buildPlantGrid(WorkplaceController controller, String statusFilter) {
+class TabBody extends StatelessWidget {
+  TabBody({super.key, required this.controller, required this.statusFilter});
+  String statusFilter;
+  WorkplaceController controller;
+  @override
+  Widget build(BuildContext context) {
     return Obx(() {
       var filteredPlants = controller.plantRequests
           .where((plant) =>
@@ -54,53 +117,21 @@ class WorkplacePage extends StatelessWidget {
           crossAxisSpacing: 30,
           mainAxisSpacing: 30,
         ),
-        itemCount: filteredPlants.length,
+        itemCount: filteredPlants.length + 1,
         itemBuilder: (context, index) {
-          var plant = filteredPlants[index];
-          return Card(
-            elevation: 4,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  plant['name'],
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 8),
-                Text(plant['date']),
-                const SizedBox(height: 8),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: getStatusColor(plant['status']),
-                    borderRadius: BorderRadius.circular(12),
-                  ),
-                  child: Text(
-                    plant['status'],
-                    style: const TextStyle(color: Colors.white),
-                  ),
-                ),
-              ],
-            ),
+          if (index - 1 == -1) {
+            return CreateNewCard(ontap: () {});
+          }
+          var plant = filteredPlants[index - 1];
+          return Card4(
+            plantname: plant['name'],
+            status: plant['status'],
+            date: plant['date'],
+            plantimage: 'assets/plantImages/plant1.png',
+            ontap: () {},
           );
         },
       );
     });
   }
-
-  Color getStatusColor(String status) {
-    switch (status) {
-      case 'New':
-        return Colors.green;
-      case 'Ongoing':
-        return Colors.orange;
-      case 'Completed':
-        return Colors.blue;
-      default:
-        return Colors.grey;
-    }
-  }
 }
-
-  
