@@ -8,39 +8,23 @@ class WorkplacePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final WorkplaceController controller = Get.find<WorkplaceController>();
-
-    return Scaffold(
-      appBar: AppBar(
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Get.back(); // Navigate back
-          },
-        ),
-        title: const Text("Plant Requests"),
-        actions: [
-          TextButton(
-            onPressed: () {
-              // Handle navigation to request list
-              Get.toNamed('/requestList');
-            },
-            child: const Text(
-              'Go to Request List',
-              style: TextStyle(color: Colors.green),
-            ),
-          )
-        ],
-        bottom: TabBar(
-          controller: controller.tabController,
-          tabs: const [
-            Tab(text: 'All'),
-            Tab(text: 'In progress'),
-            Tab(text: 'Completed'),
+  return DefaultTabController(
+    initialIndex: 0,
+  length: 3,
+  child: Scaffold(
+    body: Column(
+      children: [
+         TabBar( 
+          tabs: [
+              Tab(text: 'All'),
+              Tab(text: 'In progress'),
+              Tab(text: 'Completed'),
           ],
+          controller: controller.tabController,
           indicatorColor: Colors.green,
         ),
-      ),
-      body: TabBarView(
+        Expanded(
+          child: TabBarView(
         controller: controller.tabController,
         children: [
           buildPlantGrid(controller, 'All'),
@@ -48,7 +32,12 @@ class WorkplacePage extends StatelessWidget {
           buildPlantGrid(controller, 'Completed'),
         ],
       ),
-    );
+        ),
+      ],
+    ),
+  ),
+);
+
   }
 
   Widget buildPlantGrid(WorkplaceController controller, String statusFilter) {
@@ -61,9 +50,9 @@ class WorkplacePage extends StatelessWidget {
       return GridView.builder(
         padding: const EdgeInsets.all(8),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 8,
-          mainAxisSpacing: 8,
+          crossAxisCount: 6,
+          crossAxisSpacing: 30,
+          mainAxisSpacing: 30,
         ),
         itemCount: filteredPlants.length,
         itemBuilder: (context, index) {
@@ -113,3 +102,5 @@ class WorkplacePage extends StatelessWidget {
     }
   }
 }
+
+  

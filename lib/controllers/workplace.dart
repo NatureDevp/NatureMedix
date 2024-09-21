@@ -18,7 +18,7 @@ class WorkplaceController extends GetxController
       {'name': 'Aloe Vera', 'status': 'New', 'date': 'Accepted at June 27'},
       {
         'name': 'Rosemary',
-        'status': 'Ongoing',
+        'status': 'In progress',
         'date': 'Last modify at June 26'
       },
       {
